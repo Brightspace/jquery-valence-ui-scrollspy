@@ -32,6 +32,7 @@
 				var spyPosition = getSpyPosition();
 
 				var doDelayedSpy = function( $scrollPoint, isVisible ) {
+
 					setTimeout( function() {
 
 						var newSpyPosition = getSpyPosition();
@@ -52,7 +53,7 @@
 				for( var i=scrollPoints.length-1; i>=0; --i ) {
 
 					// check to make sure registered node is still attached to DOM
-					if ( !$.contains( body, scrollPoints[i].get( 0 ) ) ) {
+					if ( !scrollPoints[i].closest( 'body' ) ) {
 
 						$spy.data( 'scrollPoints' ).splice( i, 1 );
 
