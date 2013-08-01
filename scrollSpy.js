@@ -2,6 +2,14 @@
 
 	$.widget( "vui.vui_scrollSpy", { 
 
+		destroy: function() {
+
+			$( this.element )
+				.off( 'vui-spy' )
+				.data( 'scrollPoints', [] );
+
+		},
+
 		_create: function() {
 
 			var me = this;
@@ -11,7 +19,7 @@
 
 			var $spy = $( this.element );
 
-			var getSpyPosition = function() {
+			var getSpyBoundaries = function() {
 
 				var spyTop = $spy.scrollTop();
 				var spyBottom = spyTop + $spy.height();
@@ -23,29 +31,41 @@
 
 			};
 
-			var doSpy = function() {
+			var doSpy = function( e ) {
 
 				var scrollPoints = $spy.data( 'scrollPoints' );
+				if ( scrollPoints === undefined ) {
+					return;
+				}
 
 				var body = document.body;
 
-				var spyPosition = getSpyPosition();
+				var spyBoundaries = getSpyBoundaries();
 
 				var doDelayedSpy = function( $scrollPoint, isVisible ) {
 
 					setTimeout( function() {
 
-						var newSpyPosition = getSpyPosition();
+						var newSpyBoundaries = getSpyBoundaries();
 
-						if ( me._isScrollPointBottomVisible( newSpyPosition, $scrollPoint ) !== isVisible ) {
+						if ( me._isScrollPointBottomVisible( newSpyBoundaries, $scrollPoint ) !== isVisible ) {
 							return;
 						}
+
+						var args = {
+							'isVisible' : isVisible,
+							'event': e,
+							'key': $scrollPoint.attr( 'data-spy-key' ),
+							'node': $scrollPoint.get( 0 )
+						};
 
 						if ( isVisible ) {
 							$scrollPoint.addClass( 'vui-scroll-point-visible' );
 						} else {
 							$scrollPoint.removeClass( 'vui-scroll-point-visible' );
 						}
+
+						$spy.trigger( 'vui-spy', args );
 
 					}, $scrollPoint.data( 'spy-time' ) );
 				};
@@ -61,7 +81,7 @@
 
 						doDelayedSpy( 
 							scrollPoints[i], 
-							me._isScrollPointBottomVisible( spyPosition, scrollPoints[i] ) 
+							me._isScrollPointBottomVisible( spyBoundaries, scrollPoints[i] ) 
 						);
 
 					}
@@ -71,32 +91,70 @@
 			};
 
 			$spy.on( 'scroll', function( e ) {
-				doSpy();
+				doSpy( e );
 			} );
 
 			$spy.on( 'resize', function( e ) {
-				doSpy();
+				doSpy( e );
 			} );
 
 			$( document )
 				.on( 'vui-viewrender', function( e ) {
-					doSpy();
+					doSpy( e );
+				} )
+				.on( 'vui-finish', function( e ) {
+					doSpy( e );
 				} );
-
-			setTimeout( function() {
-				doSpy();
-			}, 0 );
 
 		},
 
-		_isScrollPointBottomVisible: function( spyPosition, $scrollPoint ) {
+		_isScrollPointBottomVisible: function( spyBoundaries, $scrollPoint ) {
+
+			var isVisible;
 
 			var pointOffsetBottom = $scrollPoint.offset().top + $scrollPoint.height();
-			return ( pointOffsetBottom >= spyPosition.top && pointOffsetBottom <= spyPosition.bottom );
 
+			var $window = $( window );
+			var $body = $( document.body );
+
+			var isScrolledToBottom = ( $body.get( 0 ).scrollHeight === ( $window.height() + $body.scrollTop() ) );
+
+			var spyLimitY = 1.0;
+			if ( !isScrolledToBottom ) {
+				spyLimitY = $scrollPoint.data( 'spy-limit-y' );
+			} 
+			
+			var spyBoundaryBottomAdjustment = ( spyBoundaries.bottom - spyBoundaries.top ) * spyLimitY;
+			var spyBoundaryBottom = spyBoundaries.top + spyBoundaryBottomAdjustment;
+
+			isVisible = ( pointOffsetBottom >= spyBoundaries.top && pointOffsetBottom <= spyBoundaryBottom );
+
+			return isVisible;
+		},
+
+		isScrollPointRegistered: function( node ) {
+			
+			var $spy = $( this.element );
+
+			var scrollPoints = $spy.data( 'scrollPoints' );
+			if ( scrollPoints === undefined || scrollPoints.length === 0 ) {
+				return false;
+			}
+
+			for( var i=0; scrollPoints[i]; i++ ) {
+				if ( scrollPoints[i].get(0) === node ) {
+					return true;
+				}
+			}
+
+			return false;
 		},
 
 		registerScrollPoint: function( node ) {
+
+			if ( this.isScrollPointRegistered( node ) ) {
+				return;
+			}
 
 			var $spy = $( this.element );
 
@@ -116,8 +174,8 @@
 						$node.attr( 'data-spy-time' ) !== undefined ? $node.attr( 'data-spy-time' ) : 1000 
 					)
 					.data( 
-						'spy-offset', 
-						$node.attr( 'data-spy-offset' ) !== undefined ? $node.attr( 'data-spy-offset' ) : 0 
+						'spy-limit-y', 
+						$node.attr( 'data-spy-limit-y' ) !== undefined ? parseFloat( $node.attr( 'data-spy-limit-y' ) ) : 1 
 					)
 			);
 
