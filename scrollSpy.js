@@ -110,22 +110,29 @@
 
 		_isScrollPointBottomVisible: function( spyBoundaries, $scrollPoint ) {
 
-			var isVisible;
+			var isVisible,
+				spyBoundaryBottom,
+				spyBoundaryBottomAdjustment,
+				spyLimitY = 1.0,
+				pointOffsetBottom = $scrollPoint.offset().top + $scrollPoint.height(),
+				$window = $( window ),
+				$body = $(document.body),
+				bodyScrollHeight = Math.max( $body.get(0).scrollHeight, document.documentElement.scrollHeight ),
+				bodyScrollTop = Math.max( $body.scrollTop(), document.documentElement.scrollTop ),
+				offScreenBottom = bodyScrollHeight - bodyScrollTop - $window.height();
 
-			var pointOffsetBottom = $scrollPoint.offset().top + $scrollPoint.height();
-
-			var $window = $( window );
-			var $body = $( document.body );
-
-			var isScrolledToBottom = ( $body.get( 0 ).scrollHeight === ( $window.height() + $body.scrollTop() ) );
-
-			var spyLimitY = 1.0;
-			if ( !isScrolledToBottom ) {
-				spyLimitY = $scrollPoint.data( 'spy-limit-y' );
-			} 
+			spyLimitY = $scrollPoint.data( 'spy-limit-y' ) !== undefined ? $scrollPoint.data( 'spy-limit-y' ) : 1;
 			
-			var spyBoundaryBottomAdjustment = ( spyBoundaries.bottom - spyBoundaries.top ) * spyLimitY;
-			var spyBoundaryBottom = spyBoundaries.top + spyBoundaryBottomAdjustment;
+
+			if ( spyLimitY < 1 && ( offScreenBottom <= ( ( $window.height() * spyLimitY ) / 2 ) ) ) {
+
+				spyBoundaryBottomAdjustment = spyBoundaries.bottom - spyBoundaries.top ;
+
+			} else {
+				spyBoundaryBottomAdjustment = ( spyBoundaries.bottom - spyBoundaries.top ) * spyLimitY;
+			}
+			 
+			spyBoundaryBottom = spyBoundaries.top + spyBoundaryBottomAdjustment;
 
 			isVisible = ( pointOffsetBottom >= spyBoundaries.top && pointOffsetBottom <= spyBoundaryBottom );
 
@@ -175,7 +182,7 @@
 					)
 					.data( 
 						'spy-limit-y', 
-						$node.attr( 'data-spy-limit-y' ) !== undefined ? parseFloat( $node.attr( 'data-spy-limit-y' ) ) : 1 
+						$node.attr('data-spy-limit-y') !== undefined ? parseFloat($node.attr('data-spy-limit-y')) : 1
 					)
 			);
 
