@@ -34,7 +34,7 @@
 			var doSpy = function( e ) {
 
 				var scrollPoints = $spy.data( 'scrollPoints' );
-				if ( scrollPoints === undefined ) {
+				if ( ! scrollPoints ) {
 					return;
 				}
 
@@ -44,7 +44,7 @@
 
 				var doDelayedSpy = function( $scrollPoint, isVisible ) {
 
-					setTimeout( function() {
+					setTimeout(function () {
 
 						var newSpyBoundaries = getSpyBoundaries();
 
@@ -67,7 +67,7 @@
 
 						$spy.trigger( 'vui-spy', args );
 
-					}, $scrollPoint.data( 'spy-time' ) );
+					}, $scrollPoint.data('spy-time'));
 				};
 
 				for( var i=scrollPoints.length-1; i>=0; --i ) {
@@ -178,11 +178,11 @@
 				$node
 					.data( 
 						'spy-time', 
-						$node.attr( 'data-spy-time' ) !== undefined ? $node.attr( 'data-spy-time' ) : 1000 
+						$node.attr( 'data-spy-time' ) !== undefined ? parseInt( $node.attr( 'data-spy-time' ), 10 ) : 500 
 					)
 					.data( 
 						'spy-limit-y', 
-						$node.attr('data-spy-limit-y') !== undefined ? parseFloat($node.attr('data-spy-limit-y')) : 1
+						$node.attr('data-spy-limit-y') !== undefined ? parseFloat( $node.attr( 'data-spy-limit-y' ) ) : 1
 					)
 			);
 
