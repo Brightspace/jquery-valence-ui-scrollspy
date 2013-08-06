@@ -192,7 +192,7 @@
 				$node
 					.data( 
 						'spy-time', 
-						$node.attr( 'data-spy-time' ) !== undefined ? parseInt( $node.attr( 'data-spy-time' ), 10 ) : 0
+						$node.attr( 'data-spy-time' ) !== undefined ? parseInt( $node.attr( 'data-spy-time' ), 10 ) : 3000
 					)
 					.data( 
 						'spy-limit-y', 
