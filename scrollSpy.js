@@ -14,9 +14,6 @@
 
 			var me = this;
 
-			var defaultSpyTime = 1000;
-			var defaultSpyOffset = 100;
-
 			var $spy = $( this.element );
 
 			var getSpyBoundaries = function() {
@@ -52,6 +49,12 @@
 							return;
 						}
 
+						if ( isVisible && $scrollPoint.hasClass( 'vui-scroll-point-visible' ) ) {
+							return;
+						} else if ( !isVisible && !$scrollPoint.hasClass( 'vui-scroll-point-visible' ) ) {
+							return;
+						}
+
 						var args = {
 							'isVisible' : isVisible,
 							'event': e,
@@ -79,10 +82,20 @@
 
 					} else {
 
-						doDelayedSpy( 
-							scrollPoints[i], 
-							me._isScrollPointBottomVisible( spyBoundaries, scrollPoints[i] ) 
-						);
+						var isBottomVisible = me._isScrollPointBottomVisible( spyBoundaries, scrollPoints[i] ) ;
+
+						if ( isBottomVisible && !scrollPoints[i].hasClass( 'vui-scroll-point-visible' ) ) {
+							doDelayedSpy( 
+								scrollPoints[i], 
+								true
+							);
+						} else if ( !isBottomVisible && scrollPoints[i].hasClass( 'vui-scroll-point-visible' ) ) {
+							console.log('is not visible any more');
+							doDelayedSpy( 
+								scrollPoints[i], 
+								false
+							);
+						}
 
 					}
 
@@ -101,10 +114,11 @@
 			$( document )
 				.on( 'vui-viewrender', function( e ) {
 					doSpy( e );
-				} )
-				.on( 'vui-finish', function( e ) {
-					doSpy( e );
 				} );
+
+			setTimeout( function() {
+				doSpy();
+			}, 0 );
 
 		},
 
@@ -116,7 +130,7 @@
 				spyLimitY = 1.0,
 				pointOffsetBottom = $scrollPoint.offset().top + $scrollPoint.height(),
 				$window = $( window ),
-				$body = $(document.body),
+				$body = $( document.body ),
 				bodyScrollHeight = Math.max( $body.get(0).scrollHeight, document.documentElement.scrollHeight ),
 				bodyScrollTop = Math.max( $body.scrollTop(), document.documentElement.scrollTop ),
 				offScreenBottom = bodyScrollHeight - bodyScrollTop - $window.height();
@@ -178,11 +192,11 @@
 				$node
 					.data( 
 						'spy-time', 
-						$node.attr( 'data-spy-time' ) !== undefined ? parseInt( $node.attr( 'data-spy-time' ), 10 ) : 500 
+						$node.attr( 'data-spy-time' ) !== undefined ? parseInt( $node.attr( 'data-spy-time' ), 10 ) : 0
 					)
 					.data( 
 						'spy-limit-y', 
-						$node.attr('data-spy-limit-y') !== undefined ? parseFloat( $node.attr( 'data-spy-limit-y' ) ) : 1
+						$node.attr('data-spy-limit-y') !== undefined ? parseInt( $node.attr( 'data-spy-limit-y' ), 10 ) / 100 : 1
 					)
 			);
 
