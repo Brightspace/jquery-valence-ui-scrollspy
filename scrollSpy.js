@@ -90,7 +90,6 @@
 								true
 							);
 						} else if ( !isBottomVisible && scrollPoints[i].hasClass( 'vui-scroll-point-visible' ) ) {
-							console.log('is not visible any more');
 							doDelayedSpy( 
 								scrollPoints[i], 
 								false
