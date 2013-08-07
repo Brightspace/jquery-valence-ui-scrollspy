@@ -2,6 +2,10 @@
 
 	$.widget( "vui.vui_scrollSpy", { 
 
+		options: {
+			disabled: false
+		},
+
 		destroy: function() {
 
 			$( this.element )
@@ -29,6 +33,10 @@
 			};
 
 			var doSpy = function( e ) {
+
+				if ( me.options.disabled ) {
+					return;
+				}
 
 				var scrollPoints = $spy.data( 'scrollPoints' );
 				if ( ! scrollPoints ) {
