@@ -121,6 +121,10 @@
 
 		},
 
+		isVisible: function( node ) {
+			return $( node ).hasClass( 'vui-scroll-point-visible' );
+		},
+
 		_isScrollPointBottomVisible: function( spyBoundaries, $scrollPoint ) {
 
 			var isVisible,
