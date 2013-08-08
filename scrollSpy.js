@@ -6,6 +6,31 @@
 			disabled: false
 		},
 
+		_create: function() {
+
+			var me = this;
+
+			var $spy = $( this.element );
+
+			$spy.on( 'scroll', function( e ) {
+				me._doSpy( $spy, e );
+			} );
+
+			$spy.on( 'resize', function( e ) {
+				me._doSpy( $spy, e );
+			} );
+
+			$( document )
+				.on( 'vui-viewrender', function( e ) {
+					me._doSpy( $spy, e );
+				} );
+
+			setTimeout( function() {
+				me._doSpy( $spy );
+			}, 0 );
+
+		},
+
 		destroy: function() {
 
 			$( this.element )
@@ -14,11 +39,9 @@
 
 		},
 
-		_create: function() {
+		_doSpy: function( $spy, e ) {
 
 			var me = this;
-
-			var $spy = $( this.element );
 
 			var getSpyBoundaries = function() {
 
@@ -32,112 +55,91 @@
 
 			};
 
-			var doSpy = function( e ) {
+			if ( me.options.disabled ) {
+				return;
+			}
 
-				if ( me.options.disabled ) {
-					return;
-				}
+			var scrollPoints = $spy.data( 'scrollPoints' );
+			if ( ! scrollPoints ) {
+				return;
+			}
 
-				var scrollPoints = $spy.data( 'scrollPoints' );
-				if ( ! scrollPoints ) {
-					return;
-				}
+			var body = document.body;
 
-				var body = document.body;
+			var spyBoundaries = getSpyBoundaries();
 
-				var spyBoundaries = getSpyBoundaries();
+			var doDelayedSpy = function( $scrollPoint, isVisible ) {
 
-				var doDelayedSpy = function( $scrollPoint, isVisible ) {
+				setTimeout( function () {
 
-					setTimeout(function () {
+					var newSpyBoundaries = getSpyBoundaries();
 
-						var newSpyBoundaries = getSpyBoundaries();
+					if ( me.options.disabled ) {
+						return;
+					}
 
-						if (me.options.disabled) {
-							return;
+					if ( me._isScrollPointBottomVisible( newSpyBoundaries, $scrollPoint ) !== isVisible ) {
+						return;
+					}
+
+					if ( isVisible && $scrollPoint.hasClass( 'vui-scroll-point-visible' ) ) {
+						return;
+					} else if ( !isVisible && !$scrollPoint.hasClass( 'vui-scroll-point-visible' ) ) {
+						return;
+					}
+
+					var args = {
+						'isVisible' : isVisible,
+						'event': e,
+						'key': $scrollPoint.attr( 'data-spy-key' ),
+						'node': $scrollPoint.get( 0 )
+					};
+
+					if ( isVisible ) {
+
+						$scrollPoint.addClass( 'vui-scroll-point-visible' );
+
+						if ( !$scrollPoint.data( 'spy-isSpied' ) ) {
+							$scrollPoint.data( 'spy-isSpied', true );
+							$spy.trigger( 'vui-first-spy', args );
+
 						}
-
-						if ( me._isScrollPointBottomVisible( newSpyBoundaries, $scrollPoint ) !== isVisible ) {
-							return;
-						}
-
-						if ( isVisible && $scrollPoint.hasClass( 'vui-scroll-point-visible' ) ) {
-							return;
-						} else if ( !isVisible && !$scrollPoint.hasClass( 'vui-scroll-point-visible' ) ) {
-							return;
-						}
-
-						var args = {
-							'isVisible' : isVisible,
-							'event': e,
-							'key': $scrollPoint.attr( 'data-spy-key' ),
-							'node': $scrollPoint.get( 0 )
-						};
-
-						if ( isVisible ) {
-
-							$scrollPoint.addClass( 'vui-scroll-point-visible' );
-
-							if ( !$scrollPoint.data( 'spy-isSpied' ) ) {
-								$scrollPoint.data( 'spy-isSpied', true );
-								$spy.trigger( 'vui-first-spy', args );
-
-							}
-
-						} else {
-							$scrollPoint.removeClass( 'vui-scroll-point-visible' );
-						}
-						
-						$spy.trigger('vui-spy', args);
-						
-					}, $scrollPoint.data('spy-time'));
-				};
-
-				for( var i=scrollPoints.length-1; i>=0; --i ) {
-
-					// check to make sure registered node is still attached to DOM
-					if ( !scrollPoints[i].closest( 'body' ) ) {
-
-						$spy.data( 'scrollPoints' ).splice( i, 1 );
 
 					} else {
+						$scrollPoint.removeClass( 'vui-scroll-point-visible' );
+					}
+						
+					$spy.trigger( 'vui-spy', args );
+						
+				}, $scrollPoint.data( 'spy-time' ) );
+			};
 
-						var isBottomVisible = me._isScrollPointBottomVisible( spyBoundaries, scrollPoints[i] ) ;
+			for( var i=scrollPoints.length-1; i>=0; --i ) {
 
-						if ( isBottomVisible && !scrollPoints[i].hasClass( 'vui-scroll-point-visible' ) ) {
-							doDelayedSpy( 
-								scrollPoints[i], 
-								true
-							);
-						} else if ( !isBottomVisible && scrollPoints[i].hasClass( 'vui-scroll-point-visible' ) ) {
-							doDelayedSpy( 
-								scrollPoints[i], 
-								false
-							);
-						}
+				// check to make sure registered node is still attached to DOM
+				if ( !scrollPoints[i].closest( 'body' ) ) {
 
+					$spy.data( 'scrollPoints' ).splice( i, 1 );
+
+				} else {
+
+					var isBottomVisible = me._isScrollPointBottomVisible( spyBoundaries, scrollPoints[i] ) ;
+
+					if ( isBottomVisible && !scrollPoints[i].hasClass( 'vui-scroll-point-visible' ) ) {
+						doDelayedSpy( 
+							scrollPoints[i], 
+							true
+						);
+					} else if ( !isBottomVisible && scrollPoints[i].hasClass( 'vui-scroll-point-visible' ) ) {
+						doDelayedSpy( 
+							scrollPoints[i], 
+							false
+						);
 					}
 
 				}
 
-			};
-
-			$spy.on( 'scroll', function( e ) {
-				doSpy( e );
-			} );
-
-			$spy.on( 'resize', function( e ) {
-				doSpy( e );
-			} );
-
-			$( document )
-				.on( 'vui-viewrender', function( e ) {
-					doSpy( e );
-				} );
-
-			setTimeout( function() {
-				doSpy();
-			}, 0 );
+			}
 
 		},
 
@@ -222,6 +224,16 @@
 						$node.attr('data-spy-limit-y') !== undefined ? parseInt( $node.attr( 'data-spy-limit-y' ), 10 ) / 100 : 1
 					)
 			);
+
+		},
+
+		_setOption: function( key, value ) {
+
+			$.Widget.prototype._setOption.apply( this, arguments );
+
+			if ( key === 'disabled' && value !== true ) {
+				this._doSpy( $( this.element ) );
+			}
 
 		}
 
