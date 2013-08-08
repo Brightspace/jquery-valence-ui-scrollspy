@@ -53,6 +53,10 @@
 
 						var newSpyBoundaries = getSpyBoundaries();
 
+						if (me.options.disabled) {
+							return;
+						}
+
 						if ( me._isScrollPointBottomVisible( newSpyBoundaries, $scrollPoint ) !== isVisible ) {
 							return;
 						}
@@ -83,9 +87,9 @@
 						} else {
 							$scrollPoint.removeClass( 'vui-scroll-point-visible' );
 						}
-
-						$spy.trigger( 'vui-spy', args );
-
+						
+						$spy.trigger('vui-spy', args);
+						
 					}, $scrollPoint.data('spy-time'));
 				};
 
