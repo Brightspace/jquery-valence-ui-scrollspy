@@ -78,6 +78,14 @@
 						return;
 					}
 
+					var args = {
+						'isVisible': isVisible,
+						'event': e,
+						'key': $scrollPoint.attr('data-spy-key'),
+						'node': $scrollPoint.get(0)
+					};
+
+
 					if (!$scrollPoint.data('spy-isSpied')) {
 						$scrollPoint.data('spy-isSpied', true);
 						$spy.trigger('vui-skim-spy', args);
@@ -93,13 +101,8 @@
 						return;
 					}
 
-					var args = {
-						'isVisible' : isVisible,
-						'event': e,
-						'key': $scrollPoint.attr( 'data-spy-key' ),
-						'node': $scrollPoint.get( 0 )
-					};
-
+					args.isVisible = isVisible;
+					
 					if ( isVisible ) {
 						$scrollPoint.addClass( 'vui-scroll-point-visible' );
 					} else {
