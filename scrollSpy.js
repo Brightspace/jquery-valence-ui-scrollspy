@@ -78,6 +78,11 @@
 						return;
 					}
 
+					if (!$scrollPoint.data('spy-isSpied')) {
+						$scrollPoint.data('spy-isSpied', true);
+						$spy.trigger('vui-skim-spy', args);
+
+					}
 					if ( me._isScrollPointBottomVisible( newSpyBoundaries, $scrollPoint ) !== isVisible ) {
 						return;
 					}
@@ -96,15 +101,7 @@
 					};
 
 					if ( isVisible ) {
-
 						$scrollPoint.addClass( 'vui-scroll-point-visible' );
-
-						if ( !$scrollPoint.data( 'spy-isSpied' ) ) {
-							$scrollPoint.data( 'spy-isSpied', true );
-							$spy.trigger( 'vui-first-spy', args );
-
-						}
-
 					} else {
 						$scrollPoint.removeClass( 'vui-scroll-point-visible' );
 					}
