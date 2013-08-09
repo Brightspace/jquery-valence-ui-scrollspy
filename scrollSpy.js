@@ -22,6 +22,9 @@
 			$( document ).on( 'touchmove', function( e ) {
 				me._doSpy( $spy, e );
 			} );
+			$( document ).on( 'MSPointerMove', function( e ) {
+				me._doSpy( $spy, e );
+			} );
 			$( document )
 				.on( 'vui-viewrender', function( e ) {
 					me._doSpy( $spy, e );
