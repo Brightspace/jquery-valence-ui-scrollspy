@@ -19,7 +19,9 @@
 			$spy.on( 'resize', function( e ) {
 				me._doSpy( $spy, e );
 			} );
-
+			$( document ).on( 'touchmove', function( e ) {
+				me._doSpy( $spy, e );
+			} );
 			$( document )
 				.on( 'vui-viewrender', function( e ) {
 					me._doSpy( $spy, e );
@@ -86,13 +88,16 @@
 					};
 
 
-					if (!$scrollPoint.data('spy-isSpied')) {
-						$scrollPoint.data('spy-isSpied', true);
-						$spy.trigger('vui-skim-spy', args);
+					if ( !$scrollPoint.data( 'spy-isSpied' ) ) {
+						
 
+						$scrollPoint.data( 'spy-isSpied', true );
+						$spy.trigger('vui-skim-spy', args);
 					}
+
 					if ( me._isScrollPointBottomVisible( newSpyBoundaries, $scrollPoint ) !== isVisible ) {
 						return;
+
 					}
 
 					if ( isVisible && $scrollPoint.hasClass( 'vui-scroll-point-visible' ) ) {
