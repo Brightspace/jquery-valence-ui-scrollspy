@@ -92,10 +92,9 @@
 
 
 					if ( !$scrollPoint.data( 'spy-isSpied' ) ) {
-						
-
 						$scrollPoint.data( 'spy-isSpied', true );
 						$spy.trigger('vui-skim-spy', args);
+						$scrollPoint.addClass( 'vui-scroll-point-skim-visible' );
 					}
 
 					if ( me._isScrollPointBottomVisible( newSpyBoundaries, $scrollPoint ) !== isVisible ) {
@@ -160,25 +159,10 @@
 			var isVisible,
 				spyBoundaryBottom,
 				spyBoundaryBottomAdjustment,
-				spyLimitY = 1.0,
-				pointOffsetBottom = $scrollPoint.offset().top + $scrollPoint.height(),
-				$window = $( window ),
-				$body = $( document.body ),
-				bodyScrollHeight = Math.max( $body.get(0).scrollHeight, document.documentElement.scrollHeight ),
-				bodyScrollTop = Math.max( $body.scrollTop(), document.documentElement.scrollTop ),
-				offScreenBottom = bodyScrollHeight - bodyScrollTop - $window.height();
-
-			spyLimitY = $scrollPoint.data( 'spy-limit-y' ) !== undefined ? $scrollPoint.data( 'spy-limit-y' ) : 1;
-			
-
-			if ( spyLimitY < 1 && ( offScreenBottom <= ( ( $window.height() * spyLimitY ) / 2 ) ) ) {
-
-				spyBoundaryBottomAdjustment = spyBoundaries.bottom - spyBoundaries.top ;
-
-			} else {
-				spyBoundaryBottomAdjustment = ( spyBoundaries.bottom - spyBoundaries.top ) * spyLimitY;
-			}
-			 
+				pointOffsetBottom = $scrollPoint.offset().top + $scrollPoint.height();
+				
+				
+			spyBoundaryBottomAdjustment = ( spyBoundaries.bottom - spyBoundaries.top );
 			spyBoundaryBottom = spyBoundaries.top + spyBoundaryBottomAdjustment;
 
 			isVisible = ( pointOffsetBottom >= spyBoundaries.top && pointOffsetBottom <= spyBoundaryBottom );
@@ -226,10 +210,6 @@
 					.data( 
 						'spy-time', 
 						$node.attr( 'data-spy-time' ) !== undefined ? parseInt( $node.attr( 'data-spy-time' ), 10 ) : 3000
-					)
-					.data( 
-						'spy-limit-y', 
-						$node.attr('data-spy-limit-y') !== undefined ? parseInt( $node.attr( 'data-spy-limit-y' ), 10 ) / 100 : 1
 					)
 			);
 
