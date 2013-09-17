@@ -241,9 +241,7 @@
 
 	$( document )
 		.on( 'vui-viewrender', function( e ) {
-			//console.log('on view render');
 		}).on( 'vui-finish', function() {
-			//console.log('on view finish');
 		});
 
 } )( window.jQuery );
