@@ -239,9 +239,4 @@
 			}
 		);
 
-	$( document )
-		.on( 'vui-viewrender', function( e ) {
-		}).on( 'vui-finish', function() {
-		});
-
 } )( window.jQuery );
