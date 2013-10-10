@@ -75,6 +75,10 @@
 
 			var doDelayedSpy = function( $scrollPoint, isVisible ) {
 
+				if ( me.options.disabled ) {
+					return;
+				}
+
 				setTimeout( function () {
 
 					var newSpyBoundaries = getSpyBoundaries();
