@@ -65,7 +65,7 @@
 			}
 
 			var scrollPoints = $spy.data( 'scrollPoints' );
-			if ( ! scrollPoints ) {
+			if ( !scrollPoints ) {
 				return;
 			}
 
