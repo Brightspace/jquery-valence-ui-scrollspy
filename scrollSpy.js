@@ -44,6 +44,10 @@
 
 		},
 
+		spy: function() {
+			this._doSpy( $( this.element ) );
+		},
+
 		_doSpy: function( $spy, e ) {
 
 			var me = this;
@@ -68,8 +72,6 @@
 			if ( !scrollPoints ) {
 				return;
 			}
-
-			var body = document.body;
 
 			var spyBoundaries = getSpyBoundaries();
 
@@ -128,7 +130,7 @@
 			for( var i=scrollPoints.length-1; i>=0; --i ) {
 
 				// check to make sure registered node is still attached to DOM
-				if ( !scrollPoints[i].closest( 'body' ) ) {
+				if ( scrollPoints[i].closest( 'body' ).length === 0 ) {
 
 					$spy.data( 'scrollPoints' ).splice( i, 1 );
 
