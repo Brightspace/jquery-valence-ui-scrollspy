@@ -1,4 +1,6 @@
-﻿( function( $ ) { 
+/*jslint browser: true*/
+
+( function( $, vui ) { 
 
 	$.widget( "vui.vui_scrollSpy", { 
 
@@ -245,4 +247,4 @@
 			}
 		);
 
-} )( window.jQuery );
+} )( window.jQuery, window.vui );
