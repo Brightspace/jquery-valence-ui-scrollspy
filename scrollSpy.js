@@ -1,8 +1,10 @@
 /*jslint browser: true*/
 
-( function( $, vui ) { 
+( function( vui, $ ) {
 
-	$.widget( "vui.vui_scrollSpy", { 
+	$ = vui.$;
+
+	$.widget( "vui.vui_scrollSpy", {
 
 		options: {
 			disabled: false
@@ -117,15 +119,15 @@
 					}
 
 					args.isVisible = isVisible;
-					
+
 					if ( isVisible ) {
 						$scrollPoint.addClass( 'vui-scroll-point-visible' );
 					} else {
 						$scrollPoint.removeClass( 'vui-scroll-point-visible' );
 					}
-						
+
 					$spy.trigger( 'vui-spy', args );
-						
+
 				}, $scrollPoint.data( 'spy-time' ) );
 			};
 
@@ -141,13 +143,13 @@
 					var isBottomVisible = me._isScrollPointBottomVisible( spyBoundaries, scrollPoints[i] ) ;
 
 					if ( isBottomVisible && !scrollPoints[i].hasClass( 'vui-scroll-point-visible' ) ) {
-						doDelayedSpy( 
-							scrollPoints[i], 
+						doDelayedSpy(
+							scrollPoints[i],
 							true
 						);
 					} else if ( !isBottomVisible && scrollPoints[i].hasClass( 'vui-scroll-point-visible' ) ) {
-						doDelayedSpy( 
-							scrollPoints[i], 
+						doDelayedSpy(
+							scrollPoints[i],
 							false
 						);
 					}
@@ -168,8 +170,8 @@
 				spyBoundaryBottom,
 				spyBoundaryBottomAdjustment,
 				pointOffsetBottom = $scrollPoint.offset().top + $scrollPoint.height();
-				
-				
+
+
 			spyBoundaryBottomAdjustment = ( spyBoundaries.bottom - spyBoundaries.top );
 			spyBoundaryBottom = spyBoundaries.top + spyBoundaryBottomAdjustment;
 
@@ -179,7 +181,7 @@
 		},
 
 		isScrollPointRegistered: function( node ) {
-			
+
 			var $spy = $( this.element );
 
 			var scrollPoints = $spy.data( 'scrollPoints' );
@@ -213,10 +215,10 @@
 
 			var $node = $( node );
 
-			scrollPoints.push( 
+			scrollPoints.push(
 				$node
-					.data( 
-						'spy-time', 
+					.data(
+						'spy-time',
 						$node.attr( 'data-spy-time' ) !== undefined ? parseInt( $node.attr( 'data-spy-time' ), 10 ) : 3000
 					)
 			);
@@ -240,11 +242,11 @@
 			function( node ) {
 				$( window )
 					.vui_scrollSpy()
-					.vui_scrollSpy( 
-						'registerScrollPoint', 
-						node 
+					.vui_scrollSpy(
+						'registerScrollPoint',
+						node
 					);
 			}
 		);
 
-} )( window.jQuery, window.vui );
+} )( window.vui );
