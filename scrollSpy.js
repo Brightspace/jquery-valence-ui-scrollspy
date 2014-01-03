@@ -56,12 +56,11 @@
 
 		},
 
-		destroy: function() {
-
+		_destroy: function() {
 			$( this.element )
 				.off( 'vui-spy' )
+				.off( 'vui-skim-spy' )
 				.data( 'scrollPoints', [] );
-
 		},
 
 		spy: function() {
@@ -84,7 +83,7 @@
 
 			};
 
-			if ( me.options.disabled ) {
+			if ( $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
 				return;
 			}
 
@@ -97,7 +96,7 @@
 
 			var doDelayedSpy = function( $scrollPoint, isVisible ) {
 
-				if ( me.options.disabled ) {
+				if ( $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
 					return;
 				}
 
@@ -105,7 +104,7 @@
 
 					var newSpyBoundaries = getSpyBoundaries();
 
-					if ( me.options.disabled ) {
+					if ( $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
 						return;
 					}
 
@@ -125,7 +124,6 @@
 
 					if ( me._isScrollPointBottomVisible( newSpyBoundaries, $scrollPoint ) !== isVisible ) {
 						return;
-
 					}
 
 					if ( isVisible && $scrollPoint.hasClass( 'vui-scroll-point-visible' ) ) {
@@ -242,11 +240,16 @@
 		},
 
 		_setOption: function( key, value ) {
-
+			
 			$.Widget.prototype._setOption.apply( this, arguments );
 
-			if ( key === 'disabled' && value !== true ) {
-				this._doSpy( $( this.element ) );
+			if ( key === 'disabled') {
+
+				this.options.disabled = value;
+				if ( value !== true ) {
+					this._doSpy( $( this.element ) );
+				}
+
 			}
 
 		}
