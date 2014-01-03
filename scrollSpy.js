@@ -57,15 +57,8 @@
 		},
 
 		_destroy: function() {
-
-			var $spy = $( this.element );
-
-			$.each( $spy.find( '.vui-scroll-point-visible' ),
-				function( index, node ) {
-					$( node ).removeClass( 'vui-scroll-point-visible' );
-				}
-			);
-
+			$( this.element ).find( '.vui-scroll-point-visible' )
+				.removeClass( 'vui-scroll-point-visible' );
 		},
 
 		spy: function() {
