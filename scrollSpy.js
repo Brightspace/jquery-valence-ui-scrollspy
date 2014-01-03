@@ -60,8 +60,7 @@
 
 			var $spy = $( this.element );
 
-			$.each(
-				$spy.find( '.vui-scroll-point-visible' ),
+			$.each( $spy.find( '.vui-scroll-point-visible' ),
 				function( index, node ) {
 					$( node ).removeClass( 'vui-scroll-point-visible' );
 				}
