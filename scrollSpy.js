@@ -48,7 +48,7 @@
 				me._doSpy( $spy, e );
 			} );
 			$( document )
-				.on( 'vui-viewrender', function( e ) {
+				.on( 'vui-init', function( e ) {
 					me._doSpy( $spy, e );
 				} );
 
