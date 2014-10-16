@@ -1,26 +1,8 @@
 /*jslint browser: true*/
 
-( function( vui ) {
+( function() {
 
 	'use strict';
-
-	// Check if the provided vui global is defined, otherwise try to require it if
-	// we're in a CommonJS environment; otherwise we'll just fail out
-	if( vui === undefined ) {
-		if( typeof require === 'function' ) {
-			vui = require('../../core');
-		} else {
-			throw new Error('load vui first');
-		}
-	}
-
-	// Export the vui object if we're in a CommonJS environment.
-	// It will already be on the window otherwise
-	if( typeof module === 'object' && typeof module.exports === 'object' ) {
-		module.exports = vui;
-	}
-
-	var $ = vui.$;
 
 	$.widget( "vui.vui_scrollSpy", {
 
@@ -240,7 +222,7 @@
 		},
 
 		_setOption: function( key, value ) {
-			
+
 			$.Widget.prototype._setOption.apply( this, arguments );
 
 			if ( key === 'disabled') {
@@ -256,16 +238,4 @@
 
 	} );
 
-	vui.addClassInitializer(
-			'vui-scroll-point',
-			function( node ) {
-				$( window )
-					.vui_scrollSpy()
-					.vui_scrollSpy(
-						'registerScrollPoint',
-						node
-					);
-			}
-		);
-
-} )( window.vui );
+} )();
