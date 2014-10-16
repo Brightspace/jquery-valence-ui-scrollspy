@@ -1,0 +1,13 @@
+{
+  "name": "vui-scrollspy-jquery",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "devDependencies": {
+    "jquery": "~2.0.3",
+    "jquery.ui": "~1.10.3"
+  }
+}
