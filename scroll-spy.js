@@ -226,7 +226,6 @@
 		},
 
 		_setOption: function( key, value ) {
-			console.log( '_setOption' );
 			$.Widget.prototype._setOption.apply( this, arguments );
 
 			if ( key === 'disabled') {
