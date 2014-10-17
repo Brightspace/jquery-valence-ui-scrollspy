@@ -69,6 +69,10 @@
 
 			};
 
+			var isWidgetBound = function() {
+				return $spy.data( 'vui-vui_scrollSpy' ) !== undefined;
+			};
+
 			if ( $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
 				return;
 			}
@@ -82,7 +86,7 @@
 
 			var doDelayedSpy = function( $scrollPoint, isVisible ) {
 
-				if ( $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
+				if ( !isWidgetBound() || $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
 					return;
 				}
 
@@ -90,7 +94,7 @@
 
 					var newSpyBoundaries = getSpyBoundaries();
 
-					if ( $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
+					if ( !isWidgetBound() || $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
 						return;
 					}
 
