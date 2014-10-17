@@ -28,9 +28,6 @@
 			$( document ).on( 'MSPointerMove', function( e ) {
 				me._doSpy( $spy, e );
 			} );
-			$( document ).on( 'vui-init', function( e ) {
-				me._doSpy( $spy, e );
-			} );
 
 			setTimeout( function() {
 				me._doSpy( $spy );
