@@ -19,7 +19,6 @@
 			$spy.on( 'scroll', function( e ) {
 				me._doSpy( $spy, e );
 			} );
-
 			$spy.on( 'resize', function( e ) {
 				me._doSpy( $spy, e );
 			} );
@@ -29,10 +28,9 @@
 			$( document ).on( 'MSPointerMove', function( e ) {
 				me._doSpy( $spy, e );
 			} );
-			$( document )
-				.on( 'vui-init', function( e ) {
-					me._doSpy( $spy, e );
-				} );
+			$( document ).on( 'vui-init', function( e ) {
+				me._doSpy( $spy, e );
+			} );
 
 			setTimeout( function() {
 				me._doSpy( $spy );
@@ -41,6 +39,15 @@
 		},
 
 		_destroy: function() {
+
+			var me = this;
+
+			var $spy = $( this.element );
+			$spy.off( 'scroll' );
+			$spy.off( 'resize' );
+			$( document ).off( 'touchmove' );
+			$( document ).off( 'MSPointerMove' );
+
 			$( this.element ).find( '.vui-scroll-point-visible' )
 				.removeClass( 'vui-scroll-point-visible' );
 		},
@@ -222,7 +229,7 @@
 		},
 
 		_setOption: function( key, value ) {
-
+			console.log( '_setOption' );
 			$.Widget.prototype._setOption.apply( this, arguments );
 
 			if ( key === 'disabled') {
