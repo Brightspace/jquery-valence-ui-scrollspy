@@ -19,6 +19,7 @@ gulp.task( 'test', [ 'lib' ], function () {
 			'lib/jquery/jquery.min.js',
 			'lib/jquery.ui/ui/jquery.ui.core.js',
 			'lib//jquery.ui/ui/jquery.ui.widget.js',
+			'scroll-spy.js',
 			'test/unit/**/*Spec.js'
 		],
 		preprocessors: {

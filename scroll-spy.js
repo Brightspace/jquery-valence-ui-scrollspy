@@ -1,26 +1,8 @@
 /*jslint browser: true*/
 
-( function( vui ) {
+( function() {
 
 	'use strict';
-
-	// Check if the provided vui global is defined, otherwise try to require it if
-	// we're in a CommonJS environment; otherwise we'll just fail out
-	if( vui === undefined ) {
-		if( typeof require === 'function' ) {
-			vui = require('../../core');
-		} else {
-			throw new Error('load vui first');
-		}
-	}
-
-	// Export the vui object if we're in a CommonJS environment.
-	// It will already be on the window otherwise
-	if( typeof module === 'object' && typeof module.exports === 'object' ) {
-		module.exports = vui;
-	}
-
-	var $ = vui.$;
 
 	$.widget( "vui.vui_scrollSpy", {
 
@@ -37,7 +19,6 @@
 			$spy.on( 'scroll', function( e ) {
 				me._doSpy( $spy, e );
 			} );
-
 			$spy.on( 'resize', function( e ) {
 				me._doSpy( $spy, e );
 			} );
@@ -47,10 +28,6 @@
 			$( document ).on( 'MSPointerMove', function( e ) {
 				me._doSpy( $spy, e );
 			} );
-			$( document )
-				.on( 'vui-init', function( e ) {
-					me._doSpy( $spy, e );
-				} );
 
 			setTimeout( function() {
 				me._doSpy( $spy );
@@ -59,6 +36,15 @@
 		},
 
 		_destroy: function() {
+
+			var me = this;
+
+			var $spy = $( this.element );
+			$spy.off( 'scroll' );
+			$spy.off( 'resize' );
+			$( document ).off( 'touchmove' );
+			$( document ).off( 'MSPointerMove' );
+
 			$( this.element ).find( '.vui-scroll-point-visible' )
 				.removeClass( 'vui-scroll-point-visible' );
 		},
@@ -83,6 +69,10 @@
 
 			};
 
+			var isWidgetBound = function() {
+				return $spy.data( 'vui-vui_scrollSpy' ) !== undefined;
+			};
+
 			if ( $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
 				return;
 			}
@@ -96,7 +86,7 @@
 
 			var doDelayedSpy = function( $scrollPoint, isVisible ) {
 
-				if ( $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
+				if ( !isWidgetBound() || $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
 					return;
 				}
 
@@ -104,7 +94,7 @@
 
 					var newSpyBoundaries = getSpyBoundaries();
 
-					if ( $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
+					if ( !isWidgetBound() || $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
 						return;
 					}
 
@@ -240,7 +230,6 @@
 		},
 
 		_setOption: function( key, value ) {
-			
 			$.Widget.prototype._setOption.apply( this, arguments );
 
 			if ( key === 'disabled') {
@@ -256,16 +245,4 @@
 
 	} );
 
-	vui.addClassInitializer(
-			'vui-scroll-point',
-			function( node ) {
-				$( window )
-					.vui_scrollSpy()
-					.vui_scrollSpy(
-						'registerScrollPoint',
-						node
-					);
-			}
-		);
-
-} )( window.vui );
+} )();
