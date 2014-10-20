@@ -111,7 +111,7 @@
 					}
 					expect( args.isVisible ).toBeTruthy();
 					done();
-				} )
+				} );
 
 			} );
 
@@ -125,7 +125,7 @@
 					}
 					expect( args.isVisible ).toBeTruthy();
 					done();
-				} )
+				} );
 
 			} );
 
