@@ -1,4 +1,5 @@
 var bower = require( 'gulp-bower' ),
+	coveralls = require('gulp-coveralls'),
 	gulp = require( 'gulp' ),
 	jshint = require( 'gulp-jshint' ),
 	vui = require( 'vui-helpers' );
