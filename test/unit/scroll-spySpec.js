@@ -40,12 +40,10 @@
 			jasmine.addMatchers( d2l.jasmine.matchers );
 
 			node = document.body.appendChild( document.createElement( 'div' ) );
-			node.style.position = 'absolute';
-			node.style.top = 0;
-			node.style.left = 0;
-			node.style.height = $( window ).height() + 'px';
+			node.style.height = '300px';
+			node.style.overflow = 'scroll';
 
-			$spy = $( window ).vui_scrollSpy();
+			$spy = $( node ).vui_scrollSpy();
 
 			noPt = node.appendChild( document.createElement( 'div' ) );
 			noPt.id = 'noPt';
@@ -59,7 +57,7 @@
 			spacer.style.height = '5000px';
 			node.appendChild( spacer );
 
-			pt3 = node.appendChild( createPoint( 'pt3', { spyTime: 5 } ) );
+			pt3 = node.appendChild( createPoint( 'pt3', { spyTime: 1 } ) );
 			pt4 = node.appendChild( createPoint( 'pt4', { spyTime: 5 } ) );
 			pt25Bottom = node.appendChild( createPoint( 'pt25Bottom', { spyTime: 5, bottom: '25%' } ) );
 			ptBottom = node.appendChild( createPoint( 'ptBottom', { spyTime: 5 } ) );
@@ -67,10 +65,10 @@
 		} );
 
 		afterEach( function() {
-			$( window ).off( 'vui-spy' );
-			$( window ).off( 'vui-skim-spy' );
+			$( node ).off( 'vui-spy' );
+			$( node ).off( 'vui-skim-spy' );
 			if ( $spy && $spy.data( 'vui-vui_scrollSpy' ) !== undefined ) {
-				$( window ).vui_scrollSpy( 'destroy' );
+				$( node ).vui_scrollSpy( 'destroy' );
 			}
 			document.body.removeChild( node );
 		} );
@@ -105,7 +103,7 @@
 
 				$spy.vui_scrollSpy( 'registerScrollPoint', pt1 );
 
-				$( window ).on( 'vui-spy', function( sender, args ) {
+				$( node ).on( 'vui-spy', function( sender, args ) {
 					if ( args.node.id !== 'pt1' ) {
 						return;
 					}
@@ -119,13 +117,32 @@
 
 				$spy.vui_scrollSpy( 'registerScrollPoint', pt2 );
 
-				$( window ).on( 'vui-spy', function( sender, args ) {
+				$( node ).on( 'vui-spy', function( sender, args ) {
 					if ( args.key !== 'key1' ) {
 						return;
 					}
 					expect( args.isVisible ).toBeTruthy();
 					done();
 				} );
+
+			} );
+
+			it( 'is not triggered with pt3 being initially visible', function( done ) {
+
+				$spy.vui_scrollSpy( 'registerScrollPoint', pt3 );
+
+				var result = false;
+
+				$( node ).on( 'vui-spy', function( sender, args ) {
+					if ( args.node.id !== 'pt3' ) {
+						result = true;
+					}
+				} );
+
+				setTimeout( function() {
+					expect( result ).toBeFalsy();
+					done();
+				}, 1500 )
 
 			} );
 
