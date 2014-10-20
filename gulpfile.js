@@ -13,6 +13,11 @@ gulp.task( 'jshint', function() {
 		.pipe( jshint.reporter( 'default' ) );
 } );
 
+gulp.task( 'coverage', function() {
+	return gulp.src( 'test/output/coverage/**/lcov.info' )
+		.pipe( coveralls() );
+} );
+
 gulp.task( 'test', [ 'lib' ], function () {
 	return vui.test( {
 		files: [
@@ -23,6 +28,9 @@ gulp.task( 'test', [ 'lib' ], function () {
 		],
 		preprocessors: {
 			'scroll-spy.js': [ 'coverage' ]
+		},
+		coverageReporter: {
+			type: 'lcov', dir: 'test/output/coverage/'
 		}
 	} ) ;
 } );
