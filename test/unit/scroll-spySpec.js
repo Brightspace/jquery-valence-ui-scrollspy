@@ -3,7 +3,7 @@
 
 	describe( 'vui.scrollSpy', function() {
 
-		var node, $spy, noPt, pt1, pt2, pt3, pt4, pt40Top, pt60Top, pt25Bottom, ptBottom;
+		var node, $spy, noPt, pt1, pt2, pt3, pt4;
 
 		var createPoint = function( id, options ) {
 			var pt = document.createElement( 'div' );
@@ -50,8 +50,6 @@
 
 			pt1 = node.appendChild( createPoint( 'pt1', { spyTime: 5 } ) );
 			pt2 = node.appendChild( createPoint( 'pt2', { spyTime: 5, spyKey: 'key1' } ) );
-			pt40Top = node.appendChild( createPoint( 'pt40Top', { spyTime: 5, top: '40%', position: 'absolute' } ) );
-			pt60Top = node.appendChild( createPoint( 'pt60Top', { spyTime: 5, top: '60%', position: 'absolute' } ) );
 
 			var spacer = document.createElement( 'div' );
 			spacer.style.height = '5000px';
@@ -59,8 +57,7 @@
 
 			pt3 = node.appendChild( createPoint( 'pt3', { spyTime: 1 } ) );
 			pt4 = node.appendChild( createPoint( 'pt4', { spyTime: 5 } ) );
-			pt25Bottom = node.appendChild( createPoint( 'pt25Bottom', { spyTime: 5, bottom: '25%' } ) );
-			ptBottom = node.appendChild( createPoint( 'ptBottom', { spyTime: 5 } ) );
+
 
 		} );
 
@@ -143,6 +140,22 @@
 					expect( result ).toBeFalsy();
 					done();
 				}, 1500 );
+
+			} );
+
+			it( 'is triggered with pt3 being visible after resizing the spy container', function( done ) {
+
+				$spy.vui_scrollSpy( 'registerScrollPoint', pt3 );
+
+				$( node ).on( 'vui-spy', function( sender, args ) {
+					if ( args.node.id !== 'pt3' || !args.isVisible ) {
+						return;
+					}
+					expect( args.isVisible ).toBeTruthy();
+					done();
+				} );
+
+				node.style.height = '8000px';
 
 			} );
 
