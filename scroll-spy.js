@@ -73,6 +73,10 @@
 				return $spy.data( 'vui-vui_scrollSpy' ) !== undefined;
 			};
 
+			if ( !isWidgetBound() ) {
+				return;
+			}
+
 			if ( $spy.vui_scrollSpy( 'option', 'disabled' ) ) {
 				return;
 			}
