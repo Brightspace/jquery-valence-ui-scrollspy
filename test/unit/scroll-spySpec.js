@@ -142,7 +142,7 @@
 				setTimeout( function() {
 					expect( result ).toBeFalsy();
 					done();
-				}, 1500 )
+				}, 1500 );
 
 			} );
 
