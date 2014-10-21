@@ -30,9 +30,6 @@ gulp.task( 'test', [ 'lib' ], function () {
 		],
 		preprocessors: {
 			'scroll-spy.js': [ 'coverage' ]
-		},
-		coverageReporter: {
-			type: 'lcov', dir: 'test/output/coverage/'
 		}
 	} ) ;
 } );
