@@ -53,7 +53,7 @@
 			node.appendChild( spacer );
 
 			pt3 = node.appendChild( createPoint( 'pt3', { spyTime: 5 } ) );
-			pt4 = node.appendChild( createPoint( 'pt4', { spyTime: 5 } ) );
+			pt4 = node.appendChild( createPoint( 'pt4', { spyTime: 50 } ) );
 
 		} );
 
@@ -336,6 +336,27 @@
 					expect( args.node.id ).toBe( 'pt1' );
 					expect( $spy.vui_scrollSpy( 'isVisible', pt1 ) ).toBeTruthy();
 					done();
+				} );
+
+			} );
+
+			it( 'returns false until the specified spy-time has elapsed', function( done ) {
+
+				$spy.vui_scrollSpy( 'registerScrollPoint', pt4 );
+
+				onReady( function() {
+
+					node.style.height = '8000px';
+
+					expect( $spy.vui_scrollSpy( 'isVisible', pt4 ) ).toBeFalsy();
+
+					$spy.vui_scrollSpy( 'spy' );
+
+					setTimeout( function() {
+						expect( $spy.vui_scrollSpy( 'isVisible', pt4 ) ).toBeTruthy();
+						done();
+					}, 51 );
+
 				} );
 
 			} );
