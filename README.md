@@ -3,28 +3,7 @@
 [![Build status][ci-image]][ci-url]
 [![Coverage Status][coverage-image]][coverage-url]
 
-jQuery-based scroll-spy widget.
-
-##Installation
-
-Under construction.
-
-##Usage
-
-Under construction.
-
-##Building
-
-Under construction.
-
-## Contributing
-
-### Code Style
-
-This repository is configured with [EditorConfig](http://editorconfig.org) rules
-and contributions should make use of them. See the valence-ui [Code Style wiki
-page](https://github.com/Desire2Learn-Valence/valence-ui-helpers/wiki/Code-Style)
-for details.
+A jQuery-based scroll-spy widget.
 
 [npm-url]: https://npmjs.org/package/vui-scrollspy-jquery
 [npm-image]: https://badge.fury.io/js/vui-scrollspy-jquery.png
