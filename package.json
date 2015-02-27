@@ -1,11 +1,11 @@
 {
-  "name": "vui-scrollspy-jquery",
+  "name": "jquery-vui-scrollspy",
   "description": "jQuery-based scroll-spy widget",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "author": "D2L Corporation",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Brightspace/valence-ui-scrollspy-jquery.git"
+    "url": "https://github.com/Brightspace/jquery-valence-ui-scrollspy.git"
   },
   "scripts": {
     "test": "gulp && gulp test"
