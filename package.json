@@ -1,18 +1,20 @@
 {
   "name": "jquery-vui-scrollspy",
   "description": "jQuery-based scroll-spy widget",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "D2L Corporation",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/Brightspace/jquery-valence-ui-scrollspy.git"
   },
   "scripts": {
-    "test": "gulp && gulp test"
+    "pretest": "./node_modules/.bin/bower install",
+    "test": "gulp test"
   },
   "devDependencies": {
+    "bower": "^1.5.2",
     "gulp": "^3.8.8",
-    "gulp-bower": "0.0.6",
     "gulp-coveralls": "^0.1.3",
     "gulp-jshint": "^1.8.5",
     "vui-helpers": "^0.4.0"
