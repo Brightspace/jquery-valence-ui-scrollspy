@@ -1,8 +1,8 @@
+bower_components
+node_modules
+test
 .gitattributes
 .gitignore
 .npmignore
-lib
-node_modules
-test
 gulpfile.js
 bower.json

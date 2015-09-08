@@ -1,12 +1,7 @@
-var bower = require( 'gulp-bower' ),
-	coveralls = require('gulp-coveralls'),
+var coveralls = require('gulp-coveralls'),
 	gulp = require( 'gulp' ),
 	jshint = require( 'gulp-jshint' ),
 	vui = require( 'vui-helpers' );
-
-gulp.task( 'lib', function() {
-	return bower( 'lib/' );
-} );
 
 gulp.task( 'jshint', function() {
 	return gulp.src( ['gulpfile.js', 'scroll-spy.js', 'test/unit/*.js'] )
@@ -19,12 +14,12 @@ gulp.task( 'coverage', function() {
 		.pipe( coveralls() );
 } );
 
-gulp.task( 'test', [ 'lib' ], function () {
+gulp.task( 'test', [ 'jshint' ], function () {
 	return vui.test( {
 		files: [
-			'lib/jquery/jquery.min.js',
-			'lib/jquery.ui/ui/jquery.ui.core.js',
-			'lib//jquery.ui/ui/jquery.ui.widget.js',
+			'bower_components/jquery/jquery.min.js',
+			'bower_components/jquery.ui/ui/jquery.ui.core.js',
+			'bower_components//jquery.ui/ui/jquery.ui.widget.js',
 			'scroll-spy.js',
 			'test/unit/**/*Spec.js'
 		],
@@ -32,8 +27,4 @@ gulp.task( 'test', [ 'lib' ], function () {
 			'scroll-spy.js': [ 'coverage' ]
 		}
 	} ) ;
-} );
-
-gulp.task( 'default', function() {
-	gulp.start( 'jshint' );
 } );
